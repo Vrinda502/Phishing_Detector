@@ -1,0 +1,11 @@
+text,label
+"Urgent! Verify your password now",Phishing
+"Meeting tomorrow at 3 PM",Safe
+"Your account suspended",Phishing
+"Dinner with friends tonight",Safe
+"Password expired, reset immediately",Phishing
+"Project update attached",Safe
+"Click here to claim your prize",Phishing
+"Lunch with team at 1 PM",Safe
+"Your bank account has been locked",Phishing
+"Reminder: doctor's appointment tomorrow",Safe
