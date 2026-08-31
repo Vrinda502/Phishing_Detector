@@ -1,0 +1,10 @@
+From: notify@securemail.com
+To: user@example.com
+Subject: Mixed Authentication Test
+Return-Path: <notify@securemail.com>
+Message-ID: <mixed123@securemail.com>
+Received: from mail.securemail.com (HELO mail.securemail.com) (203.0.113.99)
+    by user.example.com with SMTP; Fri, 24 Jul 2026 00:30:00 +0530
+Received-SPF: pass (example.com: domain of securemail.com designates 203.0.113.99 as permitted sender)
+Authentication-Results: example.com; spf=pass smtp.mailfrom=securemail.com; dkim=fail header.d=securemail.com; dmarc=pass action=none header.from=securemail.com
+DKIM-Signature: v=1; a=rsa-sha256; d=securemail.com; s=default; bh=validhashvalue; b=falsesignaturehere

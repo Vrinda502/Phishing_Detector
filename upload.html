@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card p-4 shadow">
+    <h3 class="mb-3">Analyze Email</h3>
+
+    <!-- Content Analysis Form -->
+    <form method="POST" action="/analyze">
+        <textarea name="email_text" rows="5" class="form-control mb-3" 
+                  placeholder="Paste email text" required></textarea>
+        <input type="text" name="sender" class="form-control mb-3" 
+               placeholder="Sender" required>
+        <input type="text" name="links" class="form-control mb-3" 
+               placeholder="Links (comma separated)" required>
+        <input type="text" name="attachments" class="form-control mb-3" 
+               placeholder="Attachments (comma separated)" required>
+        <button type="submit" class="btn btn-success w-100">Analyze Content</button>
+    </form>
+
+    <hr class="my-4">
+
+    <!-- Header Analysis Form -->
+    <form method="POST" action="/analyze_headers" enctype="multipart/form-data">
+        <input type="file" name="email_file" class="form-control mb-3" required>
+        <button type="submit" class="btn btn-primary w-100">Analyze Headers</button>
+    </form>
+</div>
+{% endblock %}

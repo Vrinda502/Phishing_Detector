@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="alert alert-info">
+    <h4>Rule-based Verdict: {{ verdict_rule }}</h4>
+    <h4>
+        ML-based Verdict: {{ verdict_ml }}
+        {% if confidence %}
+          <small class="text-muted">(Confidence: {{ confidence }}%)</small>
+        {% endif %}
+    </h4>
+    <h4>
+        Risk Score:
+        {% if risk_score == "High Risk" %}
+            <span class="badge bg-danger">{{ risk_score }}</span>
+        {% elif risk_score == "Low Risk" %}
+            <span class="badge bg-success">{{ risk_score }}</span>
+        {% else %}
+            <span class="badge bg-warning">{{ risk_score }}</span>
+        {% endif %}
+    </h4>
+    {% if duplicate_message %}
+      <div class="alert alert-warning mt-3">
+        {{ duplicate_message }}
+      </div>
+    {% endif %}
+</div>
+
+<!-- Gauge Section -->
+<style>
+.gauge-section {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+.gauge {
+  width: 250px;
+  height: 150px;
+  border-radius: 150px 150px 0 0;
+  background: linear-gradient(to right, red, yellow, green);
+  position: relative;
+  overflow: hidden;
+}
+.pointer {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 4px;
+  height: 80px;
+  background: black;
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(0deg);
+  transition: transform 1s ease; /* smooth animation */
+}
+.gauge-label {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+}
+</style>
+
+<div class="gauge-section">
+  <div>
+    <div class="gauge">
+      <div class="pointer" id="rulePointer"></div>
+    </div>
+    <div class="gauge-label">Rule-based Verdict</div>
+  </div>
+  <div>
+    <div class="gauge">
+      <div class="pointer" id="mlPointer"></div>
+    </div>
+    <div class="gauge-label">ML-based Verdict</div>
+  </div>
+</div>
+
+<a href="/dashboard" class="btn btn-secondary">View Dashboard</a>
+
+<!-- Explanations Section -->
+<div class="card mt-4 shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title">🔎 What do these methods mean?</h5>
+    <p><strong>Rule-based Detection:</strong> This method uses predefined rules written by experts. For example, it flags emails with suspicious keywords like “urgent” or “account locked,” checks sender addresses, and looks for mismatched links. It’s fast and transparent, but can miss new tricks.</p>
+    <p><strong>ML-based Detection:</strong> This method uses a machine learning model trained on large datasets of phishing and safe emails. It learns patterns automatically and adapts to new styles of phishing. It provides a confidence score, but is less transparent than rules.</p>
+    <p>Together, these two approaches give a layered defense: rules catch obvious threats quickly, while ML adapts to evolving phishing tactics.</p>
+  </div>
+</div>
+
+<script>
+  // Map verdicts to angles (red = left, green = right)
+  function getAngle(verdict) {
+    if (!verdict) return 0;
+    verdict = verdict.toLowerCase();
+    if (verdict.includes("safe")) return 60;       // tilt toward green
+    if (verdict.includes("phishing")) return -60;  // tilt toward red
+    return 0; // neutral
+  }
+
+  const ruleVerdict = "{{ verdict_rule }}";
+  const mlVerdict = "{{ verdict_ml }}";
+
+  document.getElementById("rulePointer").style.transform =
+    "translateX(-50%) rotate(" + getAngle(ruleVerdict) + "deg)";
+  document.getElementById("mlPointer").style.transform =
+    "translateX(-50%) rotate(" + getAngle(mlVerdict) + "deg)";
+</script>
+{% endblock %}

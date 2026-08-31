@@ -1,0 +1,10 @@
+From: support@trustedbank.com
+To: customer@example.com
+Subject: Monthly Account Statement
+Return-Path: <support@trustedbank.com>
+Message-ID: <67890@trustedbank.com>
+Received: from mail.trustedbank.com (HELO mail.trustedbank.com) (203.0.113.45)
+    by customer.example.com with SMTP; Fri, 24 Jul 2026 00:10:00 +0530
+Received-SPF: pass (example.com: domain of trustedbank.com designates 203.0.113.45 as permitted sender)
+Authentication-Results: example.com; spf=pass smtp.mailfrom=trustedbank.com; dkim=pass header.d=trustedbank.com; dmarc=pass action=none header.from=trustedbank.com
+DKIM-Signature: v=1; a=rsa-sha256; d=trustedbank.com; s=default; bh=validhashvalue; b=validsignaturehere

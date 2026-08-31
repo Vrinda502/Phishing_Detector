@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .hero-section {
+    background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+    color: white;
+    min-height: 100vh;   /* full screen height */
+    padding: 80px 20px;
+    border-radius: 0;
+    box-shadow: none;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* space out content and footer */
+  }
+  .hero-section h1 {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  .hero-section h4 {
+    font-size: 1.5rem;
+    margin-top: 15px;
+    margin-bottom: 25px;
+  }
+  .hero-btn {
+    font-size: 1.2rem;
+    padding: 12px 30px;
+    border-radius: 30px;
+  }
+  /* Floating chat bubble button */
+  .chat-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #6610f2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    cursor: pointer;
+    z-index: 1000;
+  }
+  .chat-toggle:hover {
+    background: #007bff;
+  }
+  /* Hidden chat window */
+  .chat-window {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 300px;
+    height: 380px;
+    border-radius: 12px;
+    background: #f8f9fa;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    display: none;
+    flex-direction: column;
+    padding: 10px;
+    z-index: 1000;
+  }
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    border-radius: 8px;
+    padding: 8px;
+    background: white;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+  }
+  .chat-message {
+    margin-bottom: 6px;
+  }
+  .chat-message.user {
+    text-align: right;
+    color: #007bff;
+  }
+  .chat-message.ai {
+    text-align: left;
+    color: #6610f2;
+  }
+  .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+  }
+  .suggestion-btn {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+  }
+  footer {
+    color: #fff;
+    text-align: center;
+    padding: 20px 10px;
+    margin-top: 40px;
+  }
+</style>
+
+<div class="hero-section">
+  <div>
+    <h1><i class="bi bi-shield-lock"></i> Phisheild AI</h1>
+    <h4>Protecting your inbox with Rule‑based and AI‑powered detection</h4>
+    <p class="lead">
+      This system helps identify suspicious emails using both traditional rules and machine learning models.
+      Stay safe and secure with layered protection.
+    </p>
+    <a href="{{ url_for('login') }}" class="btn btn-warning hero-btn mt-4">
+      <i class="bi bi-box-arrow-in-right"></i> Get Started
+    </a>
+
+    <!-- Feature Cards Section inside hero -->
+    <div class="container mt-5">
+      <div class="row text-center">
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h4>🔍 Rule-Based Detection</h4>
+              <p>Detects phishing using security rules.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h4>🤖 Machine Learning</h4>
+              <p>Predicts phishing using a trained ML model.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h4>📊 Dashboard</h4>
+              <p>View statistics and recent analyses.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h4>🚫 Blacklist</h4>
+              <p>Automatically blocks phishing senders.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h4>📄 Reports</h4>
+              <p>Generate downloadable PDF reports.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h4>🔗 REST API</h4>
+              <p>Analyze emails through JSON requests.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer now inside hero -->
+  <footer>
+    <h5>Phisheild AI</h5>
+    <p>Python • Flask • Machine Learning • Cybersecurity</p>
+    <small>© 2026</small>
+  </footer>
+</div>
+
+<!-- Floating chat bubble -->
+<div class="chat-toggle" id="chatToggle">
+  🤖
+</div>
+
+<!-- Hidden chat window -->
+<div class="chat-window" id="chatWindow">
+  <h6 class="text-center">Lilly AI</h6>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-message ai">Hello! I’m Lilly. Ask me something!</div>
+  </div>
+  <form id="chatForm" class="d-flex">
+    <input type="text" id="chatInput" class="form-control form-control-sm me-2" placeholder="Ask..." required>
+    <button type="submit" class="btn btn-primary btn-sm">Go</button>
+  </form>
+  <div class="suggestions mt-2">
+    <button type="button" class="btn btn-outline-secondary suggestion-btn">What is phishing?</button>
+    <button type="button" class="btn btn-outline-secondary suggestion-btn">What is OTP?</button>
+    <button type="button" class="btn btn-outline-secondary suggestion-btn">Explain risk score</button>
+    <button type="button" class="btn btn-outline-secondary suggestion-btn">What is dashboard?</button>
+    <button type="button" class="btn btn-outline-secondary suggestion-btn">What is rule-based detection?</button>
+    <button type="button" class="btn btn-outline-secondary suggestion-btn">What is ML detection?</button>
+    <button type="button" class="btn btn-outline-secondary suggestion-btn">Why both rule and ML?</button>
+    <button type="button" class="btn btn-outline-secondary suggestion-btn">What happens if blacklisted?</button>
+  </div>
+</div>
+
+<script>
+  const chatToggle = document.getElementById('chatToggle');
+  const chatWindow = document.getElementById('chatWindow');
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+  const chatMessages = document.getElementById('chatMessages');
+  const suggestionBtns = document.querySelectorAll('.suggestion-btn');
+
+  chatToggle.addEventListener('click', () => {
+    chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  chatForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    handleUserInput(chatInput.value.trim());
+    chatInput.value = '';
+  });
+
+  suggestionBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      handleUserInput(btn.textContent);
+    });
+  });
+
+  function handleUserInput(userText) {
+    if (!userText) return;
+    const userMsg = document.createElement('div');
+    userMsg.className = 'chat-message user';
+    userMsg.textContent = userText;
+    chatMessages.appendChild(userMsg);
+
+    let answer = "";
+    if (userText.toLowerCase().includes("phishing")) {
+      answer = "Phishing is a cyber attack where attackers trick you into revealing sensitive information, often through fake emails or websites.";
+        } else if (userText.toLowerCase().includes("otp")) {
+      answer = "An OTP (One-Time Password) is a temporary code used to verify your identity. In this demo, it’s shown on screen for testing.";
+    } else if (userText.toLowerCase().includes("risk")) {
+      answer = "Risk score shows how confident the AI is about an email being safe or suspicious. High risk means you should be cautious.";
+    } else if (userText.toLowerCase().includes("dashboard")) {
+      answer = "The dashboard displays statistics of analyzed emails and recent activity so you can track phishing attempts.";
+    } else if (userText.toLowerCase().includes("rule")) {
+      answer = "Rule-based detection uses predefined patterns and keywords to identify suspicious emails, such as urgent phrases or dangerous attachments.";
+    } else if (userText.toLowerCase().includes("ml")) {
+      answer = "Machine learning detection uses trained models to recognize subtle patterns in emails that rules may miss.";
+    } else if (userText.toLowerCase().includes("both")) {
+      answer = "We need both rule-based and ML detection because rules catch obvious phishing attempts quickly, while ML identifies subtle patterns for stronger protection.";
+    } else if (userText.toLowerCase().includes("blacklist")) {
+      answer = "If an email is blacklisted, it is blocked immediately and stored in the blacklist table. Future attempts to analyze the same sender or content will be rejected.";
+    } else if (userText.toLowerCase().includes("report")) {
+      answer = "Reports allow you to generate downloadable PDF summaries of detection statistics and recent email analyses.";
+    } else if (userText.toLowerCase().includes("api")) {
+      answer = "The REST API lets external systems send email data as JSON and receive phishing analysis results programmatically.";
+    } else {
+      answer = "Lilly AI says: I heard you ask '" + userText + "'. I'm here to help!";
+    }
+
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'chat-message ai';
+    aiMsg.textContent = answer;
+    chatMessages.appendChild(aiMsg);
+
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+</script>
+
+<!-- Footer -->
+<footer>
+  <h5>Phishield AI</h5>
+  <p>Python • Flask • Machine Learning • Cybersecurity</p>
+  <small>© 2026</small>
+</footer>
+
+{% endblock %}

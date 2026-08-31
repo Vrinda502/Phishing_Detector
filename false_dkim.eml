@@ -1,0 +1,10 @@
+From: service@trustedsource.com
+To: user@example.com
+Subject: False DKIM Signature Test
+Return-Path: <service@trustedsource.com>
+Message-ID: <false123@trustedsource.com>
+Received: from mail.trustedsource.com (HELO mail.trustedsource.com) (203.0.113.200)
+    by user.example.com with SMTP; Fri, 24 Jul 2026 00:40:00 +0530
+Received-SPF: pass (example.com: domain of trustedsource.com designates 203.0.113.200 as permitted sender)
+Authentication-Results: example.com; spf=pass smtp.mailfrom=trustedsource.com; dkim=fail header.d=trustedsource.com; dmarc=pass action=none header.from=trustedsource.com
+DKIM-Signature: v=1; a=rsa-sha256; d=trustedsource.com; s=default; bh=validhashvalue; b=wrongkeysignaturevalue
